@@ -1,39 +1,16 @@
-# easyOrder: Aplicação Tech Challenge POS TECH SOAT8 FIAP - Grupo 03
+# easyOrder: Aplicação Tech Challenge POS TECH SOAT8 FIAP - Grupo 03 (Fase 4)
 
-## ✒️ Grupo / Autores
+## Microserviço de Produtos
 
-O Grupo que implementou a solução (Grupo 03), é composto pelos seguintes integrantes (nome, email, RM, discord):
-- Bruno Moreira Reis: brbrno@hotmail.com, RM358025, @bruno_m_reis
-- Fernando Gurkievicz, fergkz@gmail.com, RM357072, @goorkz
-- Marcio Saragiotto, marcio.saragiotto@gmail.com, RM357349, @msgiotto
-- Matias Correa Franco de Faria, devmatiascff@gmail.com, RM357411, @matiasf8321
-- Rafael da Silva Andrade, rafaandrade_@outlook.com, RM357010, @andrade_rafael
-
-## Projeto - Descrição e Objetivos - Fase 3
-A aplicação easyOrder 3.0 foi implementada como parte do Tech Challenge da terceira etapa da Pós Tech de
-Arquitetura de Software (Turma SOAT8) da FIAP. Esse desafio focou em criar repositórios com IaC que consigam criar
-uma Infraestrutura com recursos da AWS como EKS, VPC, etc. Um banco de dados auto-gerenciável em RDS, além de outros recursos,
-como um lambda para validação de CPF, API Gateway para direcionar o tráfego e o AWS Cognito para validações. Tudo isso criado utilizando
-o Terraform.
-
-## Links importantes da Fase 3 🌟
-Repositório da solução no Github:
- - Infra: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-infrastructure
- - Database: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-database
- - Application: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-application
- - Serverless: https://github.com/pos-tech-soat08-03/easyOrder-challenge3-serverless
-   
-[Link do Vídeo com a explicação sobre o projeto](https://youtu.be/DAt6ONelqlg)
-
-## Arquitetura AWS
-
-![Descrição da Imagem](docs/assets/arquitetura_easyOrder_AWS.png)
+Este repositório contém a implementação do microserviço de produtos da aplicação easyOrder 4.0, que foi desenvolvida como parte do Tech Challenge da quarta etapa da Pós Tech de Arquitetura de Software (Turma SOAT8) da FIAP. 
 
 &nbsp;
-## Repositório dedicado para Application 
-- Inclui a conteúdo da aplicação, realizando a conexão com o Kubernetes 
-- Utiliza Github Actions para CI/CD
-- Oferece dados para correta configuração do repositório serverless
+## Repositório dedicado para Microserviço de Produtos 
+- Inclui o código da aplicação em Typescript, conectando-se ao cluster Kubernetes previamente configurado na AWS.
+- Utiliza Github Actions para CI/CD: CI para validação do código e execução de testes, e CD para deploy da imagem da aplicação no Docker Hub.
+- Fornece dados (configurações em bucket S3) para a correta configuração do repositório serverless.
+- Documentação detalhada sobre a aplicação e a infraestrutura.
+- Instruções para execução da aplicação.
 
 ## Estrutura do Diretório
 
@@ -42,10 +19,14 @@ manifesto_kubernetes
 └── *.yaml                  - arquivos de configuração dos artefatos kubernetes
 docs                        - documentações e guias de implementação
 src                         - diretório principal com arquivos .tf
-└── *.ts                    - código-fonte da aplicação
+└── *.ts                    - código-fonte da aplicação, incluindo testes
 ```
 
 ## Configuração do CI/CD
+
+### Quality Gate
+
+ADICIONAR INFORMAÇÕES SOBRE QUALITY GATE
 
 O repositório possui um workflow de CI/CD configurado com o Github Actions, que realiza a validação e deploy da application na AWS.
 
@@ -86,13 +67,8 @@ Ao final da execução do workflow, a aplicação estará disponível na AWS, e 
 
 ## Subindo a aplicação manualmente (Desenvolvimento)
 
-Para subir a aplicação manualmente:
+... TODO
 
-Utilize as instruções do repositório easyOrder-challenge2(https://github.com/pos-tech-soat08-03/easyOrder-challenge2)
+## Executando os testes
 
-Pois o workflow foi montado para execução integrada com os recursos da AWS
-
-## Documentação
-
-Para mais informações sobre a arquitetura, verifique no repositório do desafio 3 (principal do projeto):
-https://github.com/orgs/pos-tech-soat08-03/repositories
+... TODO
