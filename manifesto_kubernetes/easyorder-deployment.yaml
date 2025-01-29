@@ -13,16 +13,28 @@ spec:
       labels:
         app: easyorder
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: easyorder-container
-        image: brunomoreirareis/easyorder:latest
+        image: brunomoreirareis/easyorder-app-cliente:v1.0.0
         resources:
           limits:
             memory: "1000Mi"
             cpu: "500m"
+            ephemeral-storage: "2Gi"
+          requests:
+            memory: "500Mi"
+            cpu: "250m"
+            storage: "1Gi"
         ports:
         - containerPort: 30000
         envFrom:
         - configMapRef:
             name: easyorder-configmap
             optional: true
+        volumeMounts:
+        - name: easyorder-storage
+          mountPath: /data
+      volumes:
+      - name: easyorder-storage
+        emptyDir: {}
