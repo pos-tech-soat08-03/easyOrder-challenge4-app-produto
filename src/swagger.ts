@@ -2,7 +2,7 @@ const swaggerAutogen = require('swagger-autogen')({ language: 'pt-BR', openapi: 
 
 const doc = {
   info: {
-    title: 'easyOrder 3.0',
+    title: 'easyOrder 4.0',
     description: 'Sistema de Gestão de Pedidos - Tech Challenge (3) da Pos Tech SOAT ',
   },
   host: '',

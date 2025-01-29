@@ -113,14 +113,14 @@ export class ProdutoGateway implements ProdutoGatewayInterface {
     return;
   }
 
-  public async salvarProduto(cliente: ProdutoEntity): Promise<void> {
+  public async salvarProduto(produto: ProdutoEntity): Promise<void> {
     const dto = {
-      id: cliente.getId(),
-      nome: cliente.getNome(),
-      descricao: cliente.getDescricao(),
-      preco: cliente.getPreco(),
-      categoria: cliente.getCategoria(),
-      imagemURL: cliente.getImagemURL(),
+      id: produto.getId(),
+      nome: produto.getNome(),
+      descricao: produto.getDescricao(),
+      preco: produto.getPreco(),
+      categoria: produto.getCategoria(),
+      imagemURL: produto.getImagemURL(),
     };
 
     await LocalModel.upsert(dto);
