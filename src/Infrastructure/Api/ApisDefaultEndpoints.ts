@@ -1,9 +1,9 @@
 import { Express } from "express";
 import swaggerUi from "swagger-ui-express";
-import swaggerOutput from "../../../swagger-output.json";
+import swaggerOutput from "../../swagger-output.json";
 
 export class DefaultApiEndpoints {
-  
+
   static start(app: Express): void {
 
     app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
@@ -23,7 +23,7 @@ export class DefaultApiEndpoints {
         #swagger.tags = ['Outros']
         #swagger.ignore = true
       */
-        res.status(200).send(`<h1>EasyOrder API 4.0 - Microserviço Produtos</h1><br>`)
+      res.status(200).send(`<h1>EasyOrder API 4.0 - Microserviço Produtos</h1><br>`)
     });
 
   }

@@ -7,11 +7,12 @@
     "node": "20.18"
   },
   "scripts": {
-    "test": "jest --testLocationInResults --no-coverage --reporters default --colors --watchAll=false --testPathPattern src/test",
-    "test-coverage": "jest --testLocationInResults --coverage --colors --testPathPattern src/test",
+    "test": "jest --testLocationInResults --no-coverage --reporters default --colors --watchAll=false --testPathPattern test",
+    "test-coverage": "jest --testLocationInResults --coverage --colors --testPathPattern test",
     "start": "node dist/app.js",
     "build": "tsc",
     "start:dev": "npm install --save-dev; CHOKIDAR_USEPOLLING=true dotenv -- tsnd --transpile-only --respawn --ignore-watch node_modules src/app.ts",
+    "start:dev-win": "dotenv -- tsnd --transpile-only --respawn --ignore-watch node_modules src/app.ts",
     "start-gendoc": "node src/swagger.ts"
   },
   "keywords": [],
