@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-easyorder
+  name: svc-easyorder-app-produto
 spec:
   type: LoadBalancer
   selector:
-    app: easyorder
+    app: easyorder-app-produto
   ports:
   - port: 80
-    targetPort: 30000
+    targetPort: 3000
     protocol: TCP
