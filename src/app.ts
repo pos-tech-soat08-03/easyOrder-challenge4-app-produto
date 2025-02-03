@@ -1,8 +1,8 @@
 import express from "express";
-import { MySQLConnection } from "./easyorder/Infrastructure/DB/Impl/MySQLConnection";
-import { CategoriaGatewayMock } from "./easyorder/Infrastructure/DB/Mock/CategoriaGatewayMock";
-import { DefaultApiEndpoints } from "./easyorder/Infrastructure/Api/ApisDefaultEndpoints";
-import { ApiProdutos } from "./easyorder/Infrastructure/Api/ApiProdutos";
+import { MySQLConnection } from "./Infrastructure/DB/Impl/MySQLConnection";
+import { CategoriaGatewayMock } from "./Infrastructure/DB/Mock/CategoriaGatewayMock";
+import { DefaultApiEndpoints } from "./Infrastructure/Api/ApisDefaultEndpoints";
+import { ApiProdutos } from "./Infrastructure/Api/ApiProdutos";
 
 // Inicialização de banco de dados
 const categoriaGatewayMock = new CategoriaGatewayMock();
