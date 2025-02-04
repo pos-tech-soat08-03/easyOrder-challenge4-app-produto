@@ -1,23 +1,23 @@
 import { CategoriaEnum } from '../../../../../../src/Core/Entity/ValueObject/CategoriaEnum';
 
 describe('CategoriaEnum', () => {
-    it('should have LANCHE as a valid enum value', () => {
+    it('deve ter LANCHE como um valor de enumeração válido', () => {
         expect(CategoriaEnum.LANCHE).toBe('LANCHE');
     });
 
-    it('should have BEBIDA as a valid enum value', () => {
+    it('deve ter BEBIDA como um valor de enumeração válido', () => {
         expect(CategoriaEnum.BEBIDA).toBe('BEBIDA');
     });
 
-    it('should have SOBREMESA as a valid enum value', () => {
+    it('devem ter SOBREMESA como um valor de enumeração válido', () => {
         expect(CategoriaEnum.SOBREMESA).toBe('SOBREMESA');
     });
 
-    it('should have ACOMPANHAMENTO as a valid enum value', () => {
+    it('devem ter ACOMPANHAMENTO como um valor de enumeração válido', () => {
         expect(CategoriaEnum.ACOMPANHAMENTO).toBe('ACOMPANHAMENTO');
     });
 
-    it('should contain all enum values', () => {
+    it('devem ter todos os valores de enumeração', () => {
         const enumValues = Object.values(CategoriaEnum);
         expect(enumValues).toEqual(['LANCHE', 'BEBIDA', 'SOBREMESA', 'ACOMPANHAMENTO']);
     });

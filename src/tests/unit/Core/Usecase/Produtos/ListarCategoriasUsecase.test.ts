@@ -9,7 +9,7 @@ describe('ListarCategoriasUsecase', () => {
         usecase = new ListarCategoriasUsecase();
     });
 
-    it('should return a list of categories', async () => {
+    it('deve retornar uma lista de categorias', async () => {
         const input: ListaCategoriasUsecaseInput = {};
         const expectedOutput: ListaCategoriasUsecaseOutput = {
             categorias: Object.values(CategoriaEnum),
@@ -20,7 +20,7 @@ describe('ListarCategoriasUsecase', () => {
         expect(output).toEqual(expectedOutput);
     });
 
-    it('should return an error message if no categories are found', async () => {
+    it('deve retornar uma mensagem de erro se nenhuma categoria for encontrada', async () => {
         jest.spyOn(Object, 'values').mockReturnValueOnce([]);
         const input: ListaCategoriasUsecaseInput = {};
         const expectedOutput: ListaCategoriasUsecaseOutput = {
@@ -33,7 +33,7 @@ describe('ListarCategoriasUsecase', () => {
         expect(output).toEqual(expectedOutput);
     });
 
-    it('should return an error message if an exception occurs', async () => {
+    it('deve retornar uma mensagem de erro se ocorrer uma exceção', async () => {
         jest.spyOn(Object, 'values').mockImplementationOnce(() => {
             throw new Error('Test error');
         });
