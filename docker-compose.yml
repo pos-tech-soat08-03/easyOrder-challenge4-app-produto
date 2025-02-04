@@ -38,5 +38,24 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-peasyorder_database_password_10"] 
       timeout: 5s
       retries: 3
+  easyorder-app-produto_mongodb:
+    image: mongo:4.0.0
+    container_name: easyorder-app-produto_mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    expose:
+      - '27017'
+    volumes:
+      - easyorder-app-produto-mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'easyorder_mongodb_username'
+      MONGO_INITDB_ROOT_PASSWORD: 'easyorder_mongodb_password'
+      MONGO_INITDB_DATABASE: 'easyorder_database_schema'
+    healthcheck:
+      test: ["CMD", "mongo", "admin", "--eval", "db.stats()"]
+      timeout: 5s
+      retries: 3
 volumes:
   easyorder-app-produto-database:
+  easyorder-app-produto-mongodb:

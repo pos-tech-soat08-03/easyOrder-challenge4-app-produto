@@ -28,7 +28,9 @@
     "mysql2": "^3.11.3",
     "sequelize": "^6.37.3",
     "ts-jest": "^29.2.5",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "mongodb": "^4.0.0",
+    "mongoose": "^6.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
