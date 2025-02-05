@@ -75,65 +75,68 @@ jobs:
         CLUSTER_NAME=$(jq -r '.outputs.easyorder_cluster_name.value' terraform_infrastructure.json)
         echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_OUTPUT
 
-    - name: Download terraform_RDS_database.json from S3 RDS_database easyorder-database/terraform.tfstate
-      run: | 
-        aws s3 cp s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder-database/terraform.tfstate terraform_RDS_database.json 
-
-    - name: Extract RDS Information 
-      id: extract-rds-info 
-      run: | 
-        RDS_INSTANCE_ADDRESS=$(jq -r '.outputs.rds_instance_address.value' terraform_RDS_database.json) 
-        RDS_INSTANCE_PORT=$(jq -r '.outputs.rds_instance_port.value' terraform_RDS_database.json) 
-        echo "RDS_INSTANCE_ADDRESS=$RDS_INSTANCE_ADDRESS" >> $GITHUB_OUTPUT 
-        echo "RDS_INSTANCE_PORT=$RDS_INSTANCE_PORT" >> $GITHUB_OUTPUT
-
     - name: Update kubeconfig 
       run: | 
         aws eks update-kubeconfig --name ${{ steps.extract-cluster-name.outputs.CLUSTER_NAME }} --region ${{ github.event.inputs.aws_region }} 
     
-    - name: Gerar arquivo easyorder-configmap.yaml
+    - name: Gerar arquivo easyorder-app-produto-configmap.yaml
       working-directory: manifesto_kubernetes/
       run: |
-          cat <<EOF > easyorder-configmap.yaml
+          cat <<EOF > easyorder-app-produto-configmap.yaml
           apiVersion: v1
           kind: ConfigMap
           metadata:
-            name: easyorder-configmap
+            name: easyorder-app-produto-configmap
           data:
             NODE_ENV: development
-            DATABASE_HOST: ${{ steps.extract-rds-info.outputs.RDS_INSTANCE_ADDRESS }}
-            DATABASE_PORT: "${{ steps.extract-rds-info.outputs.RDS_INSTANCE_PORT }}"
-            DATABASE_NAME: ${{ secrets.MYSQL_DATABASE }}
-            DATABASE_USER: ${{ secrets.MYSQL_USER }}
-            DATABASE_PASS: ${{ secrets.MYSQL_PASSWORD }}
+            DATABASE_HOST: "svc-easyorder-app-produto-database"
+            DATABASE_PORT: "${{ secrets.MYSQL_PORT}}"
+            DATABASE_NAME: "${{ secrets.MYSQL_DATABASE }}"
+            DATABASE_USER: "${{ secrets.MYSQL_USER }}"
+            DATABASE_PASS: "${{ secrets.MYSQL_PASSWORD }}"
           EOF
 
-    - name: Mostrar arquivo easyorder-configmap.yaml
+    - name: Gerar arquivo easyorder-app-produto-database-configmap.yaml
       working-directory: manifesto_kubernetes/
-      run: cat easyorder-configmap.yaml
+      run: |
+        cat <<EOF > easyorder-app-produto-database-configmap.yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: easyorder-app-produto-database-configmap
+        data:
+          MYSQL_DATABASE: "${{ secrets.MYSQL_DATABASE }}"
+          MYSQL_USER: "${{ secrets.MYSQL_USER }}"
+          MYSQL_PASSWORD: "${{ secrets.MYSQL_PASSWORD }}"
+          MYSQL_ROOT_PASSWORD: "${{ secrets.MYSQL_ROOT_PASSWORD }}"
+        EOF
 
     - name: Deploy no EKS
       working-directory: manifesto_kubernetes/ 
       run: |
-        kubectl apply -f svc-easyorder.yaml
-        kubectl apply -f easyorder-configmap.yaml
-        kubectl apply -f easyorder-deployment.yaml
-        kubectl apply -f easyorder-hpa.yaml
+        kubectl apply -f easyorder-app-produto-database-configmap.yaml
+        kubectl apply -f easyorder-app-produto-configmap.yaml
+        kubectl apply -f svc-easyorder-app-client.yaml
+        kubectl apply -f svc-easyorder-app-produto-database.yaml
+        kubectl apply -f pvc-easyorder-app-produto-database.yaml
+        kubectl apply -f easyorder-app-produto-hpa.yaml
+        kubectl apply -f easyorder-app-produto-database-deployment.yaml
+        kubectl apply -f easyorder-app-produto-deployment.yaml
   
     - name: Obter Hostname do Load Balancer
       id: get-load-balancer-hostname
       run: |
-        HOSTNAME=$(kubectl get svc svc-easyorder -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        HOSTNAME=$(kubectl get svc svc-easyorder-app-client -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
         echo "LB_HOSTNAME=$HOSTNAME" >> $GITHUB_OUTPUT
     
     - name: Obter Porta do Load Balancer
       id: get-load-balancer-port
       run: |
-        PORT=$(kubectl get svc svc-easyorder -o jsonpath='{.spec.ports[0].port}')
+        PORT=$(kubectl get svc svc-easyorder-app-client -o jsonpath='{.spec.ports[0].port}')
         echo "LB_PORT=$PORT" >> $GITHUB_OUTPUT
     
     - name: Salvar Informações no S3
       run: |
-        echo "Load Balancer Hostname: ${{ steps.get-load-balancer-hostname.outputs.LB_HOSTNAME }}" > easyorder_LB.txt
-        echo "Load Balancer Port: ${{ steps.get-load-balancer-hostname.outputs.LB_PORT }}" >> easyorder_LB.txt
-        aws s3 cp easyorder_LB.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder_LB.txt
+        echo "Load Balancer Hostname: ${{ steps.get-load-balancer-hostname.outputs.LB_HOSTNAME }}" > easyorder-app-client_LB.txt
+        echo "Load Balancer Port: ${{ steps.get-load-balancer-hostname.outputs.LB_PORT }}" >> easyorder-app-client_LB.txt
+        aws s3 cp easyorder-app-client_LB.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder-app-client_LB.txt
