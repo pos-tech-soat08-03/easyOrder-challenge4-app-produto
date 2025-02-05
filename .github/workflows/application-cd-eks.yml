@@ -116,7 +116,7 @@ jobs:
       run: |
         kubectl apply -f easyorder-app-produto-database-configmap.yaml
         kubectl apply -f easyorder-app-produto-configmap.yaml
-        kubectl apply -f svc-easyorder-app-client.yaml
+        kubectl apply -f svc-easyorder-app-produto.yaml
         kubectl apply -f svc-easyorder-app-produto-database.yaml
         kubectl apply -f pvc-easyorder-app-produto-database.yaml
         kubectl apply -f easyorder-app-produto-hpa.yaml
@@ -126,17 +126,17 @@ jobs:
     - name: Obter Hostname do Load Balancer
       id: get-load-balancer-hostname
       run: |
-        HOSTNAME=$(kubectl get svc svc-easyorder-app-client -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        HOSTNAME=$(kubectl get svc svc-easyorder-app-produto -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
         echo "LB_HOSTNAME=$HOSTNAME" >> $GITHUB_OUTPUT
     
     - name: Obter Porta do Load Balancer
       id: get-load-balancer-port
       run: |
-        PORT=$(kubectl get svc svc-easyorder-app-client -o jsonpath='{.spec.ports[0].port}')
+        PORT=$(kubectl get svc svc-easyorder-app-produto -o jsonpath='{.spec.ports[0].port}')
         echo "LB_PORT=$PORT" >> $GITHUB_OUTPUT
     
     - name: Salvar Informações no S3
       run: |
-        echo "Load Balancer Hostname: ${{ steps.get-load-balancer-hostname.outputs.LB_HOSTNAME }}" > easyorder-app-client_LB.txt
-        echo "Load Balancer Port: ${{ steps.get-load-balancer-hostname.outputs.LB_PORT }}" >> easyorder-app-client_LB.txt
-        aws s3 cp easyorder-app-client_LB.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder-app-client_LB.txt
+        echo "Load Balancer Hostname: ${{ steps.get-load-balancer-hostname.outputs.LB_HOSTNAME }}" > easyorder-app-produto_LB.txt
+        echo "Load Balancer Port: ${{ steps.get-load-balancer-hostname.outputs.LB_PORT }}" >> easyorder-app-produto_LB.txt
+        aws s3 cp easyorder-app-produto_LB.txt s3://${{ github.event.inputs.aws_backend_bucket }}/easyorder-app-produto_LB.txt
