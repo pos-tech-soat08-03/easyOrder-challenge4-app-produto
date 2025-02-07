@@ -1,9 +1,0 @@
-services:
-  backend:
-    volumes:
-      - .:/app
-    entrypoint: [ "/bin/sh", "-c" ]
-    command:
-      - |
-        npm install --save-dev
-        npm run start:dev
