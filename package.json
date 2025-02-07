@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "description": "easyOrder: Aplicação Tech Challenge POS TECH SOAT8 FIAP - Microserviço Produto",
   "main": "index.js",
+  "engines": {
+    "node": "20.18"
+  },
   "scripts": {
     "test": "jest --testLocationInResults --no-coverage --reporters default --colors --watchAll=false --testPathPattern src/test",
     "test-coverage": "jest --testLocationInResults --coverage --colors --testPathPattern src/test",
+    "test:watch": "jest --testLocationInResults --watch --colors --testPathPattern src/test",
     "start": "node dist/app.js",
     "build": "tsc",
     "start:dev": "npm install --save-dev; CHOKIDAR_USEPOLLING=true dotenv -- tsnd --transpile-only --respawn --ignore-watch node_modules src/app.ts",
+    "start:dev-win": "dotenv -- tsnd --transpile-only --respawn --ignore-watch node_modules src/app.ts",
     "start-gendoc": "node src/swagger.ts"
   },
   "keywords": [],
@@ -20,10 +25,9 @@
     "dotenv-cli": "^7.4.1",
     "express": "^4.19.2",
     "jest": "^29.7.0",
-    "mysql2": "^3.11.3",
-    "sequelize": "^6.37.3",
     "ts-jest": "^29.2.5",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "mongodb": "^4.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

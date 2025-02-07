@@ -1,5 +1,6 @@
 # Node dependency directory
 node_modules/
+mongo-data/
 
 # Environment files
 .env
@@ -13,6 +14,8 @@ dist/
 # Local development
 local/
 .vscode*
+yarn.lock
+docker-compose.override.yml
 
 # Definições de execução local
 docker-compose.override.yml

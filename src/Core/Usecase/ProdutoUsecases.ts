@@ -21,7 +21,7 @@ export class ProdutoUsesCases {
   ): Promise<{ produtos: ProdutoEntity[] | undefined; mensagem: string }> {
     try {
       const produtos = await produtoGateway.listarProdutoCategoria(categoria);
-      return { produtos, mensagem: "Produtos listado com sucesso." };
+      return { produtos, mensagem: "Produtos listado com sucesso por categoria." };
     } catch (error) {
       throw new Error("Erro ao listar produtos por categoria.");
     }
@@ -46,7 +46,7 @@ export class ProdutoUsesCases {
       await produtoGateway.salvarProduto(produto);
       return { produto, mensagem: "Produto salvo com sucesso." };
     } catch (error) {
-      throw new Error("Erro ao salvar produto.");
+      throw new Error("Erro ao salvar produto: " + JSON.stringify(error));
     }
   }
 
@@ -96,6 +96,7 @@ export class ProdutoUsesCases {
         imagemURL,
         id
       );
+      produtoGateway.salvarProduto(produto);
       return { produto, mensagem: "Sucesso ao atualizar o produto." };
     } catch (error) {
       if (error instanceof DataNotFoundException) {

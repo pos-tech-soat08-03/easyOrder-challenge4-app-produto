@@ -1,6 +1,6 @@
-import { ProdutoEntity } from '../../../easyorder/Core/Entity/ProdutoEntity';
-import { CategoriaEnum } from '../../../easyorder/Core/Entity/ValueObject/CategoriaEnum';
 import { v4 as uuidv4 } from 'uuid';
+import { CategoriaEnum } from '../../../../Core/Entity/ValueObject/CategoriaEnum';
+import { ProdutoEntity } from '../../../../Core/Entity/ProdutoEntity';
 
 jest.mock('uuid');
 
