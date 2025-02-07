@@ -1,97 +1,42 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { Db } from "mongodb";
 import { ProdutoEntity } from "../../Core/Entity/ProdutoEntity";
 import { CategoriaEnum } from "../../Core/Entity/ValueObject/CategoriaEnum";
 import { ProdutoGatewayInterface } from "../../Core/Interfaces/Gateway/ProdutoGatewayInterface";
-import { ConnectionInfo } from "../../Core/Types/ConnectionInfo";
 import { DataNotFoundException } from "../../Core/Types/ExceptionType";
 
-class LocalModel extends Model {
-  public id!: string;
-  public nome!: string;
-  public descricao!: string;
-  public preco!: number;
-  public categoria!: string;
-  public imagemURL!: string;
-}
-
 export class ProdutoGateway implements ProdutoGatewayInterface {
-  private sequelize: Sequelize;
+  private db: Db;
 
-  constructor(private dbconnection: ConnectionInfo) {
-    this.sequelize = new Sequelize(
-      this.dbconnection.database,
-      this.dbconnection.username,
-      this.dbconnection.password,
-      {
-        host: this.dbconnection.hostname,
-        port: this.dbconnection.portnumb,
-        dialect: this.dbconnection.databaseType
-      }
-    );
-    LocalModel.init(
-      {
-        id: {
-          type: DataTypes.STRING,
-          primaryKey: true,
-        },
-        nome: {
-          type: DataTypes.STRING,
-        },
-        descricao: {
-          type: DataTypes.STRING,
-        },
-        preco: {
-          type: DataTypes.DOUBLE,
-        },
-        categoria: {
-          type: DataTypes.STRING,
-        },
-        imagemURL: {
-          type: DataTypes.STRING,
-        },
-      },
-      {
-        sequelize: this.sequelize,
-        modelName: "Produto",
-        tableName: "produtos",
-        timestamps: false,
-      }
-    );
-    this.sequelize.sync({
-      alter: true,
-    });
+  constructor(monboDatabase: Db) {
+    this.db = monboDatabase;
   }
 
   public async listarProdutos(): Promise<ProdutoEntity[]> {
-    const produtos = await LocalModel.findAll();
-    if (!produtos) {
-      return [];
-    }
+    const produtos = await this.db.collection("produtos").find().toArray();
+    return produtos.map(produto => new ProdutoEntity(
+      produto.nome,
+      produto.descricao,
+      produto.preco,
+      produto.categoria as CategoriaEnum,
+      produto.imagemURL,
+      produto._id.toString()
+    ));
+  }
 
-    return produtos.map((produto) => {
-      return new ProdutoEntity(
-        produto.nome,
-        produto.descricao,
-        produto.preco,
-        produto.categoria as CategoriaEnum,
-        produto.imagemURL,
-        produto.id
-      );
-    });
+  public async listarProdutoCategoria(categoria: CategoriaEnum): Promise<ProdutoEntity[]> {
+    const produtos = await this.db.collection("produtos").find({ categoria }).toArray();
+    return produtos.map(produto => new ProdutoEntity(
+      produto.nome,
+      produto.descricao,
+      produto.preco,
+      produto.categoria as CategoriaEnum,
+      produto.imagemURL,
+      produto._id.toString()
+    ));
   }
-  public async listarProdutoCategoria(
-    categoria: CategoriaEnum
-  ): Promise<ProdutoEntity[]> {
-    return new Array<ProdutoEntity>();
-  }
-  public async buscarProdutoPorId(
-    id: string
-  ): Promise<ProdutoEntity> {
-    const produto = await LocalModel.findOne({
-      where: {
-        id: id,
-      },
-    });
+
+  public async buscarProdutoPorId(id: string): Promise<ProdutoEntity> {
+    const produto = await this.db.collection("produtos").findOne({ _id: id });
     if (!produto) {
       throw new DataNotFoundException("Produto não encontrado");
     }
@@ -101,21 +46,13 @@ export class ProdutoGateway implements ProdutoGatewayInterface {
       produto.preco,
       produto.categoria as CategoriaEnum,
       produto.imagemURL,
-      produto.id
+      produto._id.toString()
     );
-  }
-  public async removerPorId(idProduto: string): Promise<void> {
-    await LocalModel.destroy({
-      where: {
-        id: idProduto,
-      },
-    });
-    return;
   }
 
   public async salvarProduto(produto: ProdutoEntity): Promise<void> {
-    const dto = {
-      id: produto.getId(),
+    const produtoDoc = {
+      _id: produto.getId(),
       nome: produto.getNome(),
       descricao: produto.getDescricao(),
       preco: produto.getPreco(),
@@ -123,8 +60,21 @@ export class ProdutoGateway implements ProdutoGatewayInterface {
       imagemURL: produto.getImagemURL(),
     };
 
-    await LocalModel.upsert(dto);
+    console.log("Salvando produto: ", produtoDoc);
+    try {
+      await this.db.collection("produtos").updateOne(
+        { _id: produtoDoc._id },
+        { $set: produtoDoc },
+        { upsert: true }
+      );
+      console.log("Produto salvo com sucesso");
+    } catch (error) {
+      console.error("Erro ao salvar produto: ", error);
+      throw new Error("Erro ao salvar produto: " + JSON.stringify(error as Error));
+    }
+  }
 
-    return;
+  public async removerPorId(id: string): Promise<void> {
+    await this.db.collection("produtos").deleteOne({ _id: id });
   }
 }

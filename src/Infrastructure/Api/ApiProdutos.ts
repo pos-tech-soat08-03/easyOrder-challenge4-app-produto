@@ -1,11 +1,12 @@
 import express, { Request, Response, Express } from "express";
 import { ProdutoController } from "../../Application/Controller/ProdutoController";
 import { CategoriaEnum } from "../../Core/Entity/ValueObject/CategoriaEnum";
-import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
+import { MongoClient } from "mongodb";
+import { ProdutoGateway } from "../../Application/Gateway/ProdutoGateway";
 
 export class ApiProdutos {
 
-    static start(dbconnection: IDbConnection, app: Express): void {
+    static start(produtoGateway: ProdutoGateway, app: Express): void {
 
         app.use(express.json());
 
@@ -34,7 +35,7 @@ export class ApiProdutos {
            }
         */
                 try {
-                    const produtoPayload = await ProdutoController.listarProdutos(dbconnection);
+                    const produtoPayload = await ProdutoController.listarProdutos(produtoGateway);
                     res.send(produtoPayload);
 
                 } catch (error: any) {
@@ -127,7 +128,7 @@ export class ApiProdutos {
                         res.status(400).send("ID inválido.");
                         throw new Error("Erro: ID não informado no parâmetro da busca.");
                     }
-                    const produtoPayload = await ProdutoController.buscarProdutoPorId(dbconnection, id);
+                    const produtoPayload = await ProdutoController.buscarProdutoPorId(produtoGateway, id);
                     res.send(produtoPayload);
 
                 } catch (error: any) {
@@ -138,26 +139,26 @@ export class ApiProdutos {
 
         app.get(
             "/produto/listar/:categoria",
-                /**
-            #swagger.tags = ['Produtos']
-            #swagger.path = '/produto/listar/{categoria}'
-            #swagger.method = 'get'
-            #swagger.summary = 'Listar Produtos por Categoria'
-            #swagger.description = 'Lista produtos por categoria<br><br>
-        [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
-            #swagger.produces = ["application/json"]
-            #swagger.security = [{
-                "bearerAuth": []
-            }]
-            #swagger.parameters['categoria'] = {
-                in: 'path',
-                description: 'ID da Categoria',
-                required: true,
-                type: 'string',
-                example: 'LANCHE'
-            }
-            }
-        */  
+            /**
+        #swagger.tags = ['Produtos']
+        #swagger.path = '/produto/listar/{categoria}'
+        #swagger.method = 'get'
+        #swagger.summary = 'Listar Produtos por Categoria'
+        #swagger.description = 'Lista produtos por categoria<br><br>
+    [ Endpoint para integração aos sistemas administrativo e/ou de loja ]'
+        #swagger.produces = ["application/json"]
+        #swagger.security = [{
+            "bearerAuth": []
+        }]
+        #swagger.parameters['categoria'] = {
+            in: 'path',
+            description: 'ID da Categoria',
+            required: true,
+            type: 'string',
+            example: 'LANCHE'
+        }
+        }
+    */
             async (req: Request<{ categoria: string }>, res: Response) => {
                 try {
                     const categoria: string = req.params.categoria;
@@ -167,7 +168,7 @@ export class ApiProdutos {
                     }
 
                     const produtoPayload = await ProdutoController.listarProdutoPorCategoria(
-                        dbconnection,
+                        produtoGateway,
                         CategoriaEnum[categoria.toUpperCase() as keyof typeof CategoriaEnum]
                     );
                     res.send(produtoPayload);
@@ -207,7 +208,7 @@ export class ApiProdutos {
                         res.status(400).send("ID inválido.");
                         throw new Error("Erro: ID não informado no parâmetro da busca.");
                     }
-                    const produtoRemovido = await ProdutoController.removerProdutoPorId(dbconnection, id);
+                    const produtoRemovido = await ProdutoController.removerProdutoPorId(produtoGateway, id);
                     res.send(produtoRemovido);
 
                 } catch (error: any) {
@@ -262,61 +263,61 @@ export class ApiProdutos {
                     }
                 }
             */
-           /**
-                                    #swagger.responses[200] = {
-                                        'description': 'Produto cadastrado com sucesso',
-                                        '@schema': {
-                                            'properties': {
-                                                resultado_cadastro: {
-                                                    type: 'boolean',
-                                                    example: true
-                                                },
-                                                mensagem: {
-                                                    type: 'string',
-                                                    example: 'Produto cadastrado com sucesso'
-                                                },
-                                                produto: {
-                                                    type: 'object',
-                                                    properties: {
-                                                        "nome": { 
-                                                        "type": "string", 
-                                                        "example": "X-Salada"
-                                                    },
-                                                        "descricao": { 
-                                                            "type": "string",
-                                                            "example": "sem salada, sem tomate"
-                                                        },
-                                                        "preco": { 
-                                                            "type": "number",
-                                                            "example": "25"
-                                                        },
-                                                        "imagemURL": {
-                                                            "type": "string",
-                                                            "example": "xsalada.png"
-                                                        },
-                                                        "categoria": {
-                                                            "type": "string",
-                                                            "example": "LANCHE"
-                                                    }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                */
-                                     /**
-            #swagger.responses[400] = {
-                'description': 'Ocorreu um erro inesperado',
-                '@schema': {
-                    'properties': {
-                        mensagem: {
-                            type: 'string',
-                            example: 'Erro inesperado: Não foi possivel cadastrar o produto'
-                        }
-                    }
-                }
-            }
-            */
+                /**
+                                         #swagger.responses[200] = {
+                                             'description': 'Produto cadastrado com sucesso',
+                                             '@schema': {
+                                                 'properties': {
+                                                     resultado_cadastro: {
+                                                         type: 'boolean',
+                                                         example: true
+                                                     },
+                                                     mensagem: {
+                                                         type: 'string',
+                                                         example: 'Produto cadastrado com sucesso'
+                                                     },
+                                                     produto: {
+                                                         type: 'object',
+                                                         properties: {
+                                                             "nome": { 
+                                                             "type": "string", 
+                                                             "example": "X-Salada"
+                                                         },
+                                                             "descricao": { 
+                                                                 "type": "string",
+                                                                 "example": "sem salada, sem tomate"
+                                                             },
+                                                             "preco": { 
+                                                                 "type": "number",
+                                                                 "example": "25"
+                                                             },
+                                                             "imagemURL": {
+                                                                 "type": "string",
+                                                                 "example": "xsalada.png"
+                                                             },
+                                                             "categoria": {
+                                                                 "type": "string",
+                                                                 "example": "LANCHE"
+                                                         }
+                                                         }
+                                                     }
+                                                 }
+                                             }
+                                         }
+                                     */
+                /**
+#swagger.responses[400] = {
+'description': 'Ocorreu um erro inesperado',
+'@schema': {
+'properties': {
+   mensagem: {
+       type: 'string',
+       example: 'Erro inesperado: Não foi possivel cadastrar o produto'
+   }
+}
+}
+}
+*/
 
                 try {
                     if (req.body === undefined || Object.keys(req.body).length === 0) {
@@ -324,11 +325,12 @@ export class ApiProdutos {
                         throw new Error("Erro: Nenhum dado informado.");
                     }
                     const { nome, descricao, preco, categoria, imagemURL } = req.body;
-                    const produtoPayload = await ProdutoController.cadastrarProduto(dbconnection, nome, descricao, preco, categoria, imagemURL);
+                    const produtoPayload = await ProdutoController.cadastrarProduto(produtoGateway, nome, descricao, preco, categoria, imagemURL);
                     res.send(produtoPayload);
 
                 } catch (error: any) {
-                    res.send(error.message);
+                    // console.log(error);
+                    res.status(400).send(error.message);
                 }
             }
         );
@@ -379,30 +381,30 @@ export class ApiProdutos {
                 }
             }
         */
-       /**
-            #swagger.responses[400] = {
-                'description': 'Produto não encontrado',
-                '@schema': {
-                    'properties': {
-                    resultado_cadastro: {
-                            type: 'boolean',
-                             example: false
-                       },
-                        mensagem: {
-                            type: 'string',
-                            example: 'Produto não encontrado, id inexistente'
-                        }
-                    }
-                }
-            }
-            */
+                /**
+                     #swagger.responses[400] = {
+                         'description': 'Produto não encontrado',
+                         '@schema': {
+                             'properties': {
+                             resultado_cadastro: {
+                                     type: 'boolean',
+                                      example: false
+                                },
+                                 mensagem: {
+                                     type: 'string',
+                                     example: 'Produto não encontrado, id inexistente'
+                                 }
+                             }
+                         }
+                     }
+                     */
                 try {
                     if (req.body === undefined || Object.keys(req.body).length === 0) {
                         res.status(400).send("Nenhum dado informado.");
                         throw new Error("Erro: Nenhum dado informado.");
                     }
                     const { nome, descricao, preco, categoria, imagemURL, id } = req.body;
-                    const produtoAtualizado = await ProdutoController.atualizarProduto(dbconnection, nome, descricao, preco, categoria, imagemURL, id);
+                    const produtoAtualizado = await ProdutoController.atualizarProduto(produtoGateway, nome, descricao, preco, categoria, imagemURL, id);
                     res.send(produtoAtualizado);
 
                 } catch (error: any) {

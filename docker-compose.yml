@@ -20,27 +20,8 @@ services:
         easyorder-app-produto_database:
             condition: service_healthy
   easyorder-app-produto_database:
-    image: mysql:9.0.1
-    container_name: easyorder-app-produto_database
-    restart: always
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
-    volumes:
-      - easyorder-app-produto-database:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: 'easyorder_database_schema'
-      MYSQL_USER: 'easyorder_database_username'
-      MYSQL_PASSWORD: 'easyorder_database_password'
-      MYSQL_ROOT_PASSWORD: 'easyorder_database_password_10'
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-peasyorder_database_password_10"] 
-      timeout: 5s
-      retries: 3
-  easyorder-app-produto_mongodb:
     image: mongo:4.0.0
-    container_name: easyorder-app-produto_mongodb
+    container_name: easyorder-app-produto_database
     restart: always
     ports:
       - '27017:27017'
@@ -51,11 +32,10 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: 'easyorder_mongodb_username'
       MONGO_INITDB_ROOT_PASSWORD: 'easyorder_mongodb_password'
-      MONGO_INITDB_DATABASE: 'easyorder_database_schema'
+      MONGO_INITDB_DATABASE: 'easyorder'
     healthcheck:
       test: ["CMD", "mongo", "admin", "--eval", "db.stats()"]
       timeout: 5s
       retries: 3
 volumes:
-  easyorder-app-produto-database:
   easyorder-app-produto-mongodb:

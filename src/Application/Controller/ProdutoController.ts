@@ -1,13 +1,11 @@
 import { CategoriaEnum } from "../../Core/Entity/ValueObject/CategoriaEnum";
-import { IDbConnection } from "../../Core/Interfaces/IDbConnection";
 import { ProdutoUsesCases } from "../../Core/Usecase/ProdutoUsecases";
 import { ProdutoGateway } from "../Gateway/ProdutoGateway";
 import { ProdutoAdapter } from "../Presenter/ProdutoAdapter";
 
 export class ProdutoController {
 
-    public static async listarProdutos(dbConnection: IDbConnection): Promise<string> {
-        const produtoGateway = dbConnection.gateways.produtoGateway;
+    public static async listarProdutos(produtoGateway: ProdutoGateway): Promise<string> {
         const { produtos, mensagem } = await ProdutoUsesCases.listarProdutosUsecase(produtoGateway);
         if (produtos === undefined || produtos.length === 0) {
             return ProdutoAdapter.adaptPrudoJsonError(mensagem);
@@ -15,8 +13,7 @@ export class ProdutoController {
         return ProdutoAdapter.adaptJsonListaProduto(produtos, mensagem);
     }
 
-    public static async listarProdutoPorCategoria(dbConnection: IDbConnection, categoria: CategoriaEnum): Promise<string> {
-        const produtoGateway = dbConnection.gateways.produtoGateway;
+    public static async listarProdutoPorCategoria(produtoGateway: ProdutoGateway, categoria: CategoriaEnum): Promise<string> {
         const { produtos, mensagem } = await ProdutoUsesCases.listarProdutosPorCategoriaUsecase(produtoGateway, categoria);
         if (produtos === undefined || produtos.length === 0) {
             return ProdutoAdapter.adaptPrudoJsonError(mensagem);
@@ -24,8 +21,7 @@ export class ProdutoController {
         return ProdutoAdapter.adaptJsonListaProduto(produtos, mensagem);
     }
 
-    public static async buscarProdutoPorId(dbConnection: IDbConnection, id: string): Promise<string> {
-        const produtoGateway = dbConnection.gateways.produtoGateway;
+    public static async buscarProdutoPorId(produtoGateway: ProdutoGateway, id: string): Promise<string> {
         const { produto, mensagem } = await ProdutoUsesCases.buscarProdutoPorIdUsecase(produtoGateway, id);
         if (produto === undefined) {
             return ProdutoAdapter.adaptPrudoJsonError(mensagem);
@@ -33,8 +29,7 @@ export class ProdutoController {
         return ProdutoAdapter.adaptJsonProduto(produto, mensagem);
     }
 
-    public static async cadastrarProduto(dbConnection: IDbConnection, nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string): Promise<string> {
-        const produtoGateway = dbConnection.gateways.produtoGateway;
+    public static async cadastrarProduto(produtoGateway: ProdutoGateway, nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string): Promise<string> {
         const { produto, mensagem } = await ProdutoUsesCases.salvarProdutoUsecase(produtoGateway, nome, descricao, preco, categoria, imagemURL);
         if (produto === undefined) {
             return ProdutoAdapter.adaptPrudoJsonError(mensagem);
@@ -42,8 +37,7 @@ export class ProdutoController {
         return ProdutoAdapter.adaptJsonProduto(produto, mensagem);
     }
 
-    public static async atualizarProduto(dbConnection: IDbConnection, nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string, id :string): Promise<string>{
-        const produtoGateway = dbConnection.gateways.produtoGateway;
+    public static async atualizarProduto(produtoGateway: ProdutoGateway, nome: string, descricao: string, preco: number, categoria: CategoriaEnum, imagemURL: string, id: string): Promise<string> {
         const { produto, mensagem } = await ProdutoUsesCases.atualizarProdutoUsecase(produtoGateway, id, nome, descricao, preco, categoria, imagemURL);
         if (produto === undefined) {
             return ProdutoAdapter.adaptPrudoJsonError(mensagem);
@@ -51,11 +45,10 @@ export class ProdutoController {
         return ProdutoAdapter.adaptJsonProduto(produto, mensagem);
     }
 
-    public static async removerProdutoPorId(dbConnection: IDbConnection, id: string): Promise<string>{
-        const produtoGateway = dbConnection.gateways.produtoGateway;
-        const {produtoID, mensagem} = await ProdutoUsesCases.removerProdutoPorIdUsecase(produtoGateway, id);
+    public static async removerProdutoPorId(produtoGateway: ProdutoGateway, id: string): Promise<string> {
+        const { produtoID, mensagem } = await ProdutoUsesCases.removerProdutoPorIdUsecase(produtoGateway, id);
 
-        return ProdutoAdapter.adaptJsonProdutoId(produtoID ,mensagem);   
+        return ProdutoAdapter.adaptJsonProdutoId(produtoID, mensagem);
     }
 
 }

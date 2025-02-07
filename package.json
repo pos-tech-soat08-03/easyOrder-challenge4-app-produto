@@ -25,12 +25,9 @@
     "dotenv-cli": "^7.4.1",
     "express": "^4.19.2",
     "jest": "^29.7.0",
-    "mysql2": "^3.11.3",
-    "sequelize": "^6.37.3",
     "ts-jest": "^29.2.5",
     "uuidv4": "^6.2.13",
-    "mongodb": "^4.0.0",
-    "mongoose": "^6.0.0"
+    "mongodb": "^4.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

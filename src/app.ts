@@ -1,30 +1,30 @@
 import express from "express";
-import { MySQLConnection } from "./Infrastructure/DB/Impl/MySQLConnection";
-import { CategoriaGatewayMock } from "./Infrastructure/DB/Mock/CategoriaGatewayMock";
 import { DefaultApiEndpoints } from "./Infrastructure/Api/ApisDefaultEndpoints";
 import { ApiProdutos } from "./Infrastructure/Api/ApiProdutos";
+import { ProdutoGateway } from "./Application/Gateway/ProdutoGateway";
+import { MongoClient } from "mongodb";
 
-// Inicialização de banco de dados
-const categoriaGatewayMock = new CategoriaGatewayMock();
-const mysqlConnection = new MySQLConnection({
-  hostname: process.env.DATABASE_HOST ?? "ERROR",
-  portnumb: Number(process.env.DATABASE_PORT ?? "0"),
-  database: process.env.DATABASE_NAME ?? "ERROR",
-  username: process.env.DATABASE_USER ?? "ERROR",
-  password: process.env.DATABASE_PASS ?? "ERROR",
-  databaseType: 'mysql'
-});
+const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017";
 
+async function main() {
+  const client = new MongoClient(MONGODB_URI);
+  await client.connect();
 
-// Inicialização de framework Express + endpoints default
-const port = Number(process.env.SERVER_PORT ?? "3000");
-const app = express();
-DefaultApiEndpoints.start(app);
+  const produtoGateway = new ProdutoGateway(client.db("easyorder"));
 
-// Inicialização de endpoints da aplicação
-ApiProdutos.start(mysqlConnection, app);
+  // Inicialização de framework Express + endpoints default
+  const port = Number(process.env.SERVER_PORT ?? "3000");
+  const app = express();
+  DefaultApiEndpoints.start(app);
 
-// Inicialização do Express server
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+  // Inicialização de endpoints da aplicação
+  ApiProdutos.start(produtoGateway, app);
+
+  // Inicialização do Express server
+  app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+  });
+
+}
+
+main().catch(console.error);
