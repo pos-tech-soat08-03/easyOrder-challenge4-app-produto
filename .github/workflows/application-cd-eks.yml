@@ -118,6 +118,7 @@ jobs:
         kubectl apply -f easyorder-app-produto-configmap.yaml
         kubectl apply -f svc-easyorder-app-client.yaml
         kubectl apply -f svc-easyorder-app-produto-database.yaml
+        kubectl apply -f pv-easyorder-app-produto-database.yaml
         kubectl apply -f pvc-easyorder-app-produto-database.yaml
         kubectl apply -f easyorder-app-produto-hpa.yaml
         kubectl apply -f easyorder-app-produto-database-deployment.yaml
