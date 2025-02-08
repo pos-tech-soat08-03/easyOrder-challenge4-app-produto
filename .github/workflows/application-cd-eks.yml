@@ -92,7 +92,7 @@ jobs:
             DATABASE_HOST: "svc-easyorder-app-produto-database"
             DATABASE_PORT: "${{ secrets.MONGODB_PORT }}"
             DATABASE_NAME: "${{ secrets.MONGODB_DATABASE }}-PRODUTO"
-            DATABASE_USER: "${{ secrets.MONGODB_USER }}"
+            DATABASE_USER: "${{ secrets.MONGODB_USERNAME }}"
             DATABASE_PASS: "${{ secrets.MONGODB_ROOT_PASSWORD}}"
           EOF
 
@@ -106,8 +106,7 @@ jobs:
           name: easyorder-app-produto-database-configmap
         data:
           MONGODB_DATABASE: "${{ secrets.MONGODB_DATABASE }}-PRODUTO"
-          MONGODB_USER: "${{ secrets.MONGODB_USER }}"
-          MONGO_INITDB_ROOT_USERNAME: "${{ secrets.MONGODB_PASSWORD }}"
+          MONGO_INITDB_ROOT_USERNAME: "${{ secrets.MONGODB_USERNAME }}"
           MONGO_INITDB_ROOT_PASSWORD: "${{ secrets.MONGODB_ROOT_PASSWORD }}"
         EOF
 
