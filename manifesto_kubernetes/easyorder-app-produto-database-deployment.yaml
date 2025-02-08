@@ -16,21 +16,21 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: easyorder-app-produto-database-container
-          image: mysql:9.0.1
+          image: mongo:4.0.0
           resources:
             limits:
-              memory: "1000Mi"
+              memory: "3000Mi"
               cpu: "1000m"
-              ephemeral-storage: "2Gi"
+              ephemeral-storage: "5Gi"
             requests:
-              memory: "500Mi"
+              memory: "1000Mi"
               cpu: "500m"
               ephemeral-storage: "2Gi"
           ports:
-            - containerPort: 3306
+            - containerPort: 27017
           volumeMounts:
             - name: easyorder-app-produto-database-persistent-storage
-              mountPath: /var/lib/mysql
+              mountPath: /data/db
           envFrom:
             - configMapRef:
                 name: easyorder-app-produto-database-configmap

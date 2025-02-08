@@ -7,4 +7,4 @@ spec:
   selector:
     app: easyorder-app-produto-database
   ports:
-  - port: 3306
+  - port: 27017

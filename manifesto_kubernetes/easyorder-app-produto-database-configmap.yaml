@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: easyorder-app-produto-database-configmap
 data:
-  MYSQL_DATABASE: easyorder_database_schema
-  MYSQL_USER: easyorder_database_username
-  MYSQL_PASSWORD: easyorder_database_password
-  MYSQL_ROOT_PASSWORD: easyorder_database_password_10
+  MONGODB_DATABASE: easyorder_database_schema
+  MONGO_INITDB_ROOT_USERNAME: easyorder_database_username
+  MONGO_INITDB_ROOT_PASSWORD: easyorder_database_password_10
+ 
