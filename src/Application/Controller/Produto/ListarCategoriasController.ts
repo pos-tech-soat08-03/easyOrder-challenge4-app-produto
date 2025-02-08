@@ -1,9 +1,8 @@
-import express, { Request, Response } from "express";
-import { CategoriaGatewayMock } from "../../../Infrastructure/DB/Mock/CategoriaGatewayMock";
+import { Request, Response } from "express";
 import { ListarCategoriasUsecase } from "../../../Core/Usecase/Produtos/ListarCategoriasUsecase";
 
 export class ListaCategoriasController {
-  public constructor(private listaCategoriasUsecaseMock: CategoriaGatewayMock) {
+  public constructor() {
     this.handle = this.handle.bind(this);
   }
 
