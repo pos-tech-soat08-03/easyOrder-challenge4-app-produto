@@ -108,4 +108,16 @@ describe("ProdutoGateway", () => {
         expect(collection.deleteOne).toHaveBeenCalledWith({ _id: "1" });
     });
 
+    it('deve lançar DataNotFoundException quando produto não for encontrado', async () => {
+        (collection.findOne as jest.Mock).mockResolvedValue(null);
+
+        await expect(produtoGateway.buscarProdutoPorId("1")).rejects.toThrow(DataNotFoundException);
+    });
+
+    it('deve lançar erro ao salvar produto', async () => {
+        const mockProduto = new ProdutoEntity("Produto 1", "Descricao 1", 10, CategoriaEnum.ACOMPANHAMENTO, "url1", "1");
+        (collection.updateOne as jest.Mock).mockRejectedValue(new Error("Erro ao salvar"));
+
+        await expect(produtoGateway.salvarProduto(mockProduto)).rejects.toThrow("Erro ao salvar produto: {}");
+    });
 });
