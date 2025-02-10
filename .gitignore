@@ -23,3 +23,4 @@ docker-compose.override.yml
 
 # Arquivos de cobertura
 coverage/
+.sonar*
