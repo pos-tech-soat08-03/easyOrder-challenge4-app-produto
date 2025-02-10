@@ -11,7 +11,7 @@ export class ProdutoUsesCases {
       const produtos = await produtoGateway.listarProdutos();
       return { produtos, mensagem: "Produtos listado com sucesso." };
     } catch (error) {
-      throw new Error("Erro ao listar produtos por categoria.");
+      throw new Error("Erro ao listar produtos.");
     }
   }
 
