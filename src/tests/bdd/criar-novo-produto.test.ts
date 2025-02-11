@@ -59,6 +59,26 @@ describe("BDD: Cadastro Produto", () => {
                 imagemurl: 'url1',
             }),
         )
+        .example(
+            val('produto', {
+                id: '999',
+                nome: 'Produto 999',
+                descricao: 'Descricao 999',
+                preco: 100,
+                categoria: CategoriaEnum.LANCHE,
+                imagemurl: 'url999',
+            }),
+        )
+        .example(
+            val('produto', {
+                id: '555',
+                nome: 'Produto 555',
+                descricao: 'Descricao 555',
+                preco: 100,
+                categoria: CategoriaEnum.LANCHE,
+                imagemurl: 'url555',
+            }),
+        )
         .run(async (ctx) => {
             const produto = ctx.example.val('produto');
 
@@ -76,7 +96,7 @@ describe("BDD: Cadastro Produto", () => {
             const json = JSON.parse(response);
 
             expect(json.mensagem).toBe('Produto salvo com sucesso.');
-
+            expect(json.produto.nome).toBe(produto.nome);
         });
 
 });
