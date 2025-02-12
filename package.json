@@ -8,6 +8,8 @@
     "test-coverage": "jest --testLocationInResults --coverage --colors --testPathPattern src/test",
     "test:watch": "jest --testLocationInResults --verbose --watch --colors --testPathPattern src/test",
     "test:watch-file": "jest --testLocationInResults --verbose --watch --colors --testPathPattern",
+    "test:bdd": "jest --testLocationInResults --verbose --watch --colors --testPathPattern src/tests/bdd",
+    "test:bdd-watch": "jest --testLocationInResults --verbose --colors --testPathPattern src/tests/bdd",
     "start": "node dist/app.js",
     "build": "tsc",
     "start:dev": "npm install --save-dev; CHOKIDAR_USEPOLLING=true dotenv -- tsnd --transpile-only --respawn --ignore-watch node_modules src/app.ts",
