@@ -87,7 +87,7 @@ jobs:
           kind: ConfigMap
           metadata:
             name: easyorder-app-produto-configmap
-            data:
+          data:
             NODE_ENV: development
             DATABASE_HOST: svc-easyorder-app-produto-database
             DATABASE_PORT: "${{ secrets.MONGODB_PORT }}"
