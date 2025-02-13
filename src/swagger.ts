@@ -2,8 +2,8 @@ const swaggerAutogen = require('swagger-autogen')({ language: 'pt-BR', openapi: 
 
 const doc = {
   info: {
-    title: 'easyOrder 4.0',
-    description: 'Sistema de Gestão de Pedidos - Tech Challenge (3) da Pos Tech SOAT ',
+    title: 'Microserviço de Produtos | easyOrder 4.0 Documentação da API.',
+    description: 'easyOrder - Tech Challenge (4) da Pos Tech SOAT - Microserviço de Produtos'
   },
   host: '',
 
@@ -118,7 +118,7 @@ const doc = {
 };
 
 const outputFile = './swagger-output.json';
-const routes = ['./app.ts', './easyorder/Infrastructure/Api/*.ts'];
+const routes = ['./app.ts', './Infrastructure/Api/*.ts'];
 
 /* NOTE: If you are using the express Router, you must pass in the 'routes' only the 
 root file where the route starts, such as index.js, app.js, routes.js, etc ... */

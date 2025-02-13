@@ -6,7 +6,338 @@
     "version": "1.0.0"
   },
   "host": "",
-  "paths": {},
+  "paths": {
+    "/produto/listar": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Listar Produtos",
+        "description": "Lista todos os produtos cadastrados<br><br>[ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/produto/buscar/{id}": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Buscar Produto",
+        "description": "Busca um produto utilizando o Id.<br><br>[ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do produto",
+            "example": "5e73a938-41e7-4b76-a5a0-ae6147266e72"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/produto/listar/{categoria}": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Listar Produtos por Categoria",
+        "description": "Lista produtos por categoria<br><br>[ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
+        "parameters": [
+          {
+            "name": "categoria",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da Categoria",
+            "example": "LANCHE"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/produto/remover/{id}": {
+      "delete": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Remover Produto",
+        "description": "Remove um produto, por Id.<br><br>[ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do produto",
+            "example": "228ec10e-5675-47f4-ba1f-2c4932fe68cc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/produto/cadastrar": {
+      "post": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Cadastrar Produto",
+        "description": "Realiza o Cadastro de um Novo Produto, através dos dados fornecidos no corpo da requisição.<br><br>[ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "X-Salada"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "sem salada, sem tomate"
+                },
+                "preco": {
+                  "type": "number",
+                  "example": "25"
+                },
+                "imagemURL": {
+                  "type": "string",
+                  "example": "xsalada.png"
+                },
+                "categoria": {
+                  "type": "string",
+                  "example": "LANCHE"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "example": "any"
+                  },
+                  "descricao": {
+                    "example": "any"
+                  },
+                  "preco": {
+                    "example": "any"
+                  },
+                  "categoria": {
+                    "example": "any"
+                  },
+                  "imagemURL": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/produto/atualizar": {
+      "put": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Atualizar Produto",
+        "description": "Atualiza o Cadastro de um Produto, através dos dados fornecidos no corpo da requisição.<br><br>[ Endpoint para integração aos sistemas administrativo e/ou de loja ]",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "string",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "X-EGG"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "Sem cebola, sem tomate"
+                },
+                "preco": {
+                  "type": "number",
+                  "example": "35"
+                },
+                "categoria": {
+                  "type": "string",
+                  "example": "Lanche"
+                },
+                "imagemURL": {
+                  "type": "string",
+                  "example": "x-egg.jpeg"
+                },
+                "id": {
+                  "type": "string",
+                  "example": "0eb3a93d-df52-4f04-a463-389105328855"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Produto não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "resultado_cadastro": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "mensagem": {
+                      "type": "string",
+                      "example": "Produto não encontrado, id inexistente"
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "properties": {
+                    "resultado_cadastro": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "mensagem": {
+                      "type": "string",
+                      "example": "Produto não encontrado, id inexistente"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "example": "any"
+                  },
+                  "descricao": {
+                    "example": "any"
+                  },
+                  "preco": {
+                    "example": "any"
+                  },
+                  "categoria": {
+                    "example": "any"
+                  },
+                  "imagemURL": {
+                    "example": "any"
+                  },
+                  "id": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Outros"
+        ],
+        "summary": "Health check",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
   "components": {
     "securitySchemes": {
       "bearerAuth": {
