@@ -31,4 +31,3 @@ spec:
         envFrom:
         - configMapRef:
             name: easyorder-app-produto-configmap
-            optional: true

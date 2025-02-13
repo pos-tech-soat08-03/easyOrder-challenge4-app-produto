@@ -6,6 +6,6 @@ data:
   NODE_ENV: development
   DATABASE_HOST: svc-easyorder-app-produto-database
   DATABASE_PORT: "27017"
-  DATABASE_NAME: easyorder_database_schema
-  DATABASE_USER: easyorder_database_username
-  DATABASE_PASS: easyorder_database_password_10
+  DATABASE_NAME: easyorder
+  DATABASE_USER: easyorder_mongo_username
+  DATABASE_PASS: easyorder_mongo_password10
