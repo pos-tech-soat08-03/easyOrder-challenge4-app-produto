@@ -2,26 +2,27 @@
 services:
   backend:
     build: .
-    image: easyorder-app-produto:1.0.0
+    image: easyorder-app-produto:4.0.0
     container_name: easyorder-app-produto
     environment:
       NODE_ENV: "development"
       SERVER_PORT: "3000"
-      DATABASE_HOST: "easyorder-app-produto_database"
-      DATABASE_PORT: "3306"
-      DATABASE_NAME: "easyorder_database_schema"
-      DATABASE_USER: "easyorder_database_username"
-      DATABASE_PASS: "easyorder_database_password"
+      DATABASE_HOST: easyorder-app-produto-database
+      DATABASE_PORT: 27017
+      DATABASE_NAME: easyorder
+      DATABASE_USER: easyorder_mongo_username
+      DATABASE_PASS: easyorder_mongo_password10
     ports:
       - "3000:3000"
     links:
-      - easyorder-app-produto_database
+      - easyorder-app-produto-database
     depends_on:
-        easyorder-app-produto_database:
+        easyorder-app-produto-database:
             condition: service_healthy
-  easyorder-app-produto_database:
+
+  easyorder-app-produto-database:
     image: mongo:4.0.0
-    container_name: easyorder-app-produto_database
+    container_name: easyorder-app-produto-database
     restart: always
     ports:
       - '27017:27017'
@@ -30,12 +31,12 @@ services:
     volumes:
       - easyorder-app-produto-mongodb:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: 'easyorder_mongodb_username'
-      MONGO_INITDB_ROOT_PASSWORD: 'easyorder_mongodb_password'
-      MONGO_INITDB_DATABASE: 'easyorder'
+      MONGO_INITDB_ROOT_USERNAME: easyorder_mongo_username
+      MONGO_INITDB_ROOT_PASSWORD: easyorder_mongo_password10
+      MONGO_INITDB_DATABASE: easyorder
     healthcheck:
       test: ["CMD", "mongo", "admin", "--eval", "db.stats()"]
       timeout: 5s
-      retries: 3
+
 volumes:
   easyorder-app-produto-mongodb:
