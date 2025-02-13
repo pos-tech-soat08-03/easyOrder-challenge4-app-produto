@@ -40,7 +40,6 @@ export class ListaCategoriasController {
     try {
       const result = await listaCategoriasUsecase.execute(req.body);
 
-
       if (result.categorias.length > 0) {
         res.status(200).json(result);
       } else {
