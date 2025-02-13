@@ -4,7 +4,14 @@ import { ApiProdutos } from "./Infrastructure/Api/ApiProdutos";
 import { ProdutoGateway } from "./Application/Gateway/ProdutoGateway";
 import { MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017";
+// Configuração do MongoDB
+const DATABASE_HOST = process.env.DATABASE_HOST ?? "svc-easyorder-app-produto-database";
+const DATABASE_PORT = process.env.DATABASE_PORT ?? "27017";
+const DATABASE_NAME = process.env.DATABASE_NAME ?? "easyorder";
+const DATABASE_USER = process.env.DATABASE_USER ?? "easyorder_mongo_username";
+const DATABASE_PASSWORD = process.env.DATABASE_PASS ?? "easyorder_mongo_password10";
+const MONGODB_URI = process.env.MONGODB_URI ?? `mongodb://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}`;
+console.log(`MONGODB_URI: ${MONGODB_URI}`);
 
 async function main() {
   const client = new MongoClient(MONGODB_URI);
