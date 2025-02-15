@@ -33,7 +33,7 @@ O Projeto no SonarCloud pode ser acessado em:
 
 ## Cobertura de Testes
 
-![Cobertura Testes](docs/assets/captura-teste-cobertura.png)</mark>
+![Cobertura Testes](docs/assets/captura-teste-cobertura.png)
 
 ## Roteiro de Testes BDD
 
@@ -41,7 +41,11 @@ O Projeto no SonarCloud pode ser acessado em:
 
 ## Banco de Dados Não Relacional - MongoDB
 
-<mark>-------------- Inserir info sobre MongoDB ---------------</mark>
+<img src="docs/assets/mongo-logo.png" alt="Mongo Logo" width="20%">
+
+O MongoDB é um banco de dados NoSQL orientado a documentos, conhecido por sua flexibilidade e escalabilidade. Ele armazena dados em formato BSON (uma extensão binária do JSON), permitindo uma estrutura de dados mais dinâmica e complexa. A escolha do MongoDB para este projeto se deve à sua capacidade de lidar com grandes volumes de dados não estruturados e à facilidade de integração com aplicações modernas.
+
+A integração do MongoDB com a aplicação foi realizada utilizando o Mongoose, uma biblioteca de modelagem de dados para Node.js. O Mongoose facilita a definição de esquemas de dados e a validação, além de fornecer uma API intuitiva para interagir com o MongoDB. Esta abordagem permite que a aplicação mantenha uma estrutura de dados consistente e aproveite os benefícios de um banco de dados NoSQL, como alta disponibilidade e desempenho.
 
 ## Configuração do CI/CD
 
